@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 """Defines the FileStorage class."""
 import json
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 import shlex
-from models.base_model import BaseModel  # noqa
-from models.user import User  # noqa
-from models.state import State  # noqa
-from models.city import City  # noqa
-from models.place import Place  # noqa
-from models.amenity import Amenity  # noqa
-from models.review import Review  # noqa
 
 
 class FileStorage:
@@ -48,7 +48,7 @@ class FileStorage:
             self.__objects[key] = obj
 
     def save(self):
-        """Save the objects to the file in JSON format."""
+        """serialize the file path to JSON file path"""
         my_dict = {}
         for key, value in self.__objects.items():
             my_dict[key] = value.to_dict()
@@ -56,8 +56,9 @@ class FileStorage:
             json.dump(my_dict, f)
 
     def reload(self):
-        """Calls object reload from the file, if it exists."""
-                try:
+        """serialize the file path to JSON file path
+        """
+        try:
             with open(self.__file_path, 'r', encoding="UTF-8") as f:
                 for key, value in (json.load(f)).items():
                     value = eval(value["__class__"])(**value)
