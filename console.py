@@ -2,14 +2,14 @@
 """Defines the HBnB console."""
 import cmd
 import sys
-from models.base_model import BaseModel  # noqa
-from models.__init__ import storage  # noqa
-from models.user import User  # noqa
-from models.state import State  # noqa
-from models.city import City  # noqa
-from models.place import Place  # noqa
-from models.amenity import Amenity  # noqa
-from models.review import Review  # noqa
+from models.base_model import BaseModel
+from models.__init__ import storage
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -20,15 +20,12 @@ class HBNBCommand(cmd.Cmd):
         __classes (set): The set of available class names.
     """
 
-    prompt = "(hbnb) "
-    __classes = {
-        "BaseModel",
-        "User",
-        "State",
-        "City",
-        "Place",
-        "Amenity",
-        "Review"
+    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+
+    classes = {
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
     }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
@@ -310,10 +307,10 @@ class HBNBCommand(cmd.Cmd):
         new_dict = storage.all()[key]
 
         # iterate through attr names and values
-        for i, att_name in enumerate(args):
+        for x, att_name in enumerate(args):
             # block only runs on even iterations
-            if (i % 2 == 0):
-                att_val = args[i + 1]  # following item is value
+            if (x % 2 == 0):
+                att_val = args[x + 1]  # following item is value
                 if not att_name:  # check for att_name
                     print("** attribute name missing **")
                     return
@@ -330,7 +327,7 @@ class HBNBCommand(cmd.Cmd):
         new_dict.save()  # save updates to file
 
     def help_update(self):
-        """ Help information for the update class """
+        """Help information for the update class"""
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
