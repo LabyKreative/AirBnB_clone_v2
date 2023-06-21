@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Defines the city class"""
+"""Defines the city class."""
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
