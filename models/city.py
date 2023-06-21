@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-"""This is the city class"""
+"""Defines the city class"""
 from sqlalchemy.ext.declarative import declarative_base
-from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String
-from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey
+from models.base_model import BaseModel, Base
 from models.place import Place
 
 
