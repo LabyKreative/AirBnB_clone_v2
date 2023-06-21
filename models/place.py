@@ -67,7 +67,7 @@ class Place(BaseModel, Base):
                 if review[0] == 'Review':
                     review_list.append(all_objects[key])
             for review in review_list:
-                if (review.place_id == self.id:
+                if (review.place_id == self.id):
                         result.append(review)
             return result
 
