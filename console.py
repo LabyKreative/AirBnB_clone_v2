@@ -2,9 +2,8 @@
 """Defines the HBnB console."""
 import cmd
 import sys
-from shlex import split
-from models import storage
 from models.base_model import BaseModel  # noqa
+from models.__init__ import storage  # noqa
 from models.user import User  # noqa
 from models.state import State  # noqa
 from models.city import City  # noqa
