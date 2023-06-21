@@ -1,38 +1,65 @@
 #!/usr/bin/python3
 """Defines the BaseModel class."""
 import models
-from uuid import uuid4
+import uuid
 from datetime import datetime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, DateTime
+
+Base = declarative_base()
 
 
 class BaseModel:
     """Represents the base model of the HBnB project."""
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
+    created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
+    updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
 
     def __init__(self, *args, **kwargs):
-        """Initializes a new BaseModel.
-
+        """Instantiation of base model class
         Args:
-            *args: Unused positional arguments.
-            **kwargs: Key/value pairs of attributes.
+            args: it won't be used
+            kwargs: arguments for the constructor of the BaseModel
+        Attributes:
+            id: unique id generated
+            created_at: creation date
+            updated_at: updated date
         """
-        timestamp_format = "%Y-%m-%dT%H:%M:%S.%f"
-        self.id = str(uuid4())
-        self.created_at = datetime.today()
-        self.updated_at = datetime.today()
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
-                    self.__dict__[key] = datetime.strptime(
-                            value, timestamp_format)
-                else:
-                    self.__dict__[key] = value
+                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                if key != "__class__":
+                    setattr(self, key, value)
+            if "id" not in kwargs:
+                self.id = str(uuid.uuid4())
+            if "created_at" not in kwargs:
+                self.created_at = datetime.now()
+            if "updated_at" not in kwargs:
+                self.updated_at = datetime.now()
         else:
-            models.storage.new(self)
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.now()
+
+    def __str__(self):
+        """returns a string
+        Return:
+            returns a string of class name, id, and dictionary
+        """
+        return "[{}] ({}) {}".format(
+            type(self).__name__, self.id, self.__dict__)
+
+    def __repr__(self):
+        """return a string representaion
+        """
+        return self.__str__()
 
     def save(self):
         """Updates the 'updated_at' attribute with
-        the current datetime and save the model."""
-        self.updated_at = datetime.today()
+        the current datetime and save the model.
+        """
+        self.updated_at = datetime.now()
+        models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
@@ -41,13 +68,14 @@ class BaseModel:
         Includes the key/value pair '__class__' representing
         the class name of the object.
         """
-        result = self.__dict__.copy()
+        result = dict(self.__dict__)
+        result["__class__"] = str(type(self).__name__)
         result["created_at"] = self.created_at.isoformat()
         result["updated_at"] = self.updated_at.isoformat()
-        result["__class__"] = self.__class__.__name__
+        if '_sa_instance_state' in result.keys():
+            del result['_sa_instance_state']
         return result
 
-    def __str__(self):
-        """Return the string representation of the BaseModel instance."""
-        class_name = self.__class__.__name__
-        return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
+    def delete(self):
+        """delete object"""
+        models.storage.delete(self)
