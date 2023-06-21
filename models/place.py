@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-"""This is the place class"""
-from sqlalchemy.ext.declarative import declarative_base
-from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
-from sqlalchemy.orm import relationship
-from os import getenv
+"""Defines the place class"""
 import models
+from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+from models.base_model import BaseModel, Base
+from os import getenv
 
 
 place_amenity = Table("place_amenity", Base.metadata,
@@ -57,27 +57,27 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
-            """ Returns list of reviews.id """
-            var = models.storage.all()
-            lista = []
+            """Returns list reviews id"""
+            all_objects = models.storage.all()
+            review_list = []
             result = []
-            for key in var:
+            for key in all_objects:
                 review = key.replace('.', ' ')
                 review = shlex.split(review)
-                if (review[0] == 'Review'):
-                    lista.append(var[key])
-            for elem in lista:
-                if (elem.place_id == self.id):
-                    result.append(elem)
-            return (result)
+                if review[0] == 'Review':
+                    review_list.append(all_objects[key])
+            for review in review_list:
+                if (review.place_id == self.id:
+                        result.append(review)
+            return result
 
         @property
         def amenities(self):
-            """ Returns list of amenity ids """
+            """Returns list of amenity ids"""
             return self.amenity_ids
 
         @amenities.setter
         def amenities(self, obj=None):
-            """ Appends amenity ids to the attribute """
+            """Appends amenity ids to the attribute"""
             if type(obj) is Amenity and obj.id not in self.amenity_ids:
                 self.amenity_ids.append(obj.id)
