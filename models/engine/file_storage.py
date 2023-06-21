@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Defines the FileStorage class."""
 import json
+import shlex
 from models.base_model import BaseModel  # noqa
 from models.user import User  # noqa
 from models.state import State  # noqa
@@ -20,39 +21,56 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
-        """Retrieve all objects.
-
-        Returns:
-            dict: A dictionary of all objects.
+    def all(self, cls=None):
+        """returns a dictionary
+        Return:
+            returns a dictionary of __object
         """
-        return FileStorage.__objects
+        dic = {}
+        if cls:
+            dictionary = self.__objects
+            for key in dictionary:
+                partition = key.replace('.', ' ')
+                partition = shlex.split(partition)
+                if (partition[0] == cls.__name__):
+                    dic[key] = self.__objects[key]
+            return (dic)
+        else:
+            return self.__objects
 
     def new(self, obj):
-        """Add a new object to the storage.
-
+        """sets __object to given obj
         Args:
-            obj (BaseModel): The object to be added.
+            obj: given object
         """
-        obj_key = obj.__class__.__name__
-        FileStorage.__objects["{}.{}".format(obj_key, obj.id)] = obj
+        if obj:
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+            self.__objects[key] = obj
 
     def save(self):
         """Save the objects to the file in JSON format."""
-
-        obj_dict = FileStorage.__objects
-        obj_dic = {obj: obj_dict[obj].to_dict() for obj in obj_dict.keys()}
-        with open(FileStorage.__file_path, "w") as f:
-            json.dump(obj_dic, f)
+        my_dict = {}
+        for key, value in self.__objects.items():
+            my_dict[key] = value.to_dict()
+        with open(self.__file_path, 'w', encoding="UTF-8") as f:
+            json.dump(my_dict, f)
 
     def reload(self):
-        """Reload objects from the file, if it exists."""
-        try:
-            with open(FileStorage.__file_path) as f:
-                obj_dic = json.load(f)
-                for obj_data in obj_dic.values():
-                    class_name = obj_data["__class__"]
-                    del obj_data["__class__"]
-                    self.new(eval(class_name)(**obj_data))
+        """Calls object reload from the file, if it exists."""
+                try:
+            with open(self.__file_path, 'r', encoding="UTF-8") as f:
+                for key, value in (json.load(f)).items():
+                    value = eval(value["__class__"])(**value)
+                    self.__objects[key] = value
         except FileNotFoundError:
-            return
+            pass
+
+    def delete(self, obj=None):
+        """delete an existing element"""
+        if obj:
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+            del self.__objects[key]
+
+    def close(self):
+        """calls reload()"""
+        self.reload()
