@@ -1,20 +1,20 @@
 #!/usr/bin/python3
-""" new class for sqlAlchemy """
+"""Defines the new class for SQLalchemy"""
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import (create_engine)
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import (create_engine)
 from models.base_model import Base
+from models.user import User
 from models.state import State
 from models.city import City
-from models.user import User
 from models.place import Place
-from models.review import Review
 from models.amenity import Amenity
+from models.review import Review
 
 
 class DBStorage:
-    """ create tables in environmental"""
+    """Creates tables in environmental"""
     __engine = None
     __session = None
 
@@ -33,7 +33,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """returns a dictionary
+        """Returns a dictionary
         Return:
             returns a dictionary of __object
         """
@@ -55,30 +55,25 @@ class DBStorage:
         return (dic)
 
     def new(self, obj):
-        """add a new element in the table
-        """
+        """Adds a new element in the table"""
         self.__session.add(obj)
 
     def save(self):
-        """save changes
-        """
+        """Save changes"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """delete an element in the table
-        """
+        """Deletes an element in the table"""
         if obj:
             self.session.delete(obj)
 
     def reload(self):
-        """configuration
-        """
+        """Configuration"""
         Base.metadata.create_all(self.__engine)
         sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sec)
         self.__session = Session()
 
     def close(self):
-        """ calls remove()
-        """
+        """Calls remove()"""
         self.__session.close()
