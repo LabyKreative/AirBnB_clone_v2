@@ -1,20 +1,19 @@
 #!/usr/bin/python3
 """ """
-from tests.test_models.test_base_model import test_basemodel  # noqa
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from datetime import datetime
 from unittest.mock import patch
 from time import sleep
 from os import getenv
-import pycodestyle
-import inspect
+import pycodestyle  # noqa
+import inspect  # noqa
 import unittest
 storage_t = getenv("HBNB_TYPE_STORAGE")
 
-class test_Amenity(test_basemodel):
-    """ """
 
+class test_Amenity(unittest.TestCase):
+    """ """
     def __init__(self, *args, **kwargs):
         """ """
         super().__init__(*args, **kwargs)

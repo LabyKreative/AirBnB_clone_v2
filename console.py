@@ -13,6 +13,7 @@ from models.review import Review  # noqa
 
 
 class HBNBCommand(cmd.Cmd):
+    classes = []
     """Command interpreter for HBnB.
 
     Attributes:
@@ -134,13 +135,18 @@ class HBNBCommand(cmd.Cmd):
                     arg_splited[1] = arg_splited[1].replace(
                         "_", " ").replace('"', '\\"')
                 kw[arg_splited[0]] = arg_splited[1]
+            class_name = arg_list[0]
         except SyntaxError:
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
-        new_instance.save()
-        print(new_instance.id)
+        else:
+            if class_name not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+            else:
+                new_instance = HBNBCommand.classes[class_name](**kw)
+                new_instance.save()
+                print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """

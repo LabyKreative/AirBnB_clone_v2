@@ -98,12 +98,14 @@ class test_fileStorage(unittest.TestCase):
         """ Key is properly formatted """
         new = BaseModel()
         _id = new.to_dict()['id']
+        temp = None  # Initialize temp with a default value
         for key in storage.all().keys():
             temp = key
-        self.assertEqual(temp, 'BaseModel' + '.' + _id)
+            break  # Only need the first key, so exit the loop
+        self.assertEqual(temp, 'BaseModel.' + _id)
 
     def test_storage_var_created(self):
-        """ FileStorage object storage created """
+        """FileStorage object storage created"""
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
