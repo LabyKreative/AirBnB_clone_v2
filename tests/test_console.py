@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""test for console"""
+"""Tests for console"""
 import unittest
 from unittest.mock import patch
 from io import StringIO
@@ -231,7 +231,6 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("User.update(" + my_id + ", name)")
             self.assertEqual(
                 "** value missing **\n", f.getvalue())
-
 
 if __name__ == "__main__":
     unittest.main()
