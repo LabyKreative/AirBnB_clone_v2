@@ -6,7 +6,7 @@ from io import StringIO
 import pep8
 import os
 import json
-import console
+import console  # noqa
 import tests
 from console import HBNBCommand
 from models.base_model import BaseModel
