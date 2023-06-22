@@ -58,26 +58,26 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             """ Returns list of reviews.id """
-            var = models.storage.all()
-            lista = []
-            result = []
-            for key in var:
+            all_objects = models.storage.all()
+            review_list = []
+            result_list = []
+            for key in all_objects:
                 review = key.replace('.', ' ')
                 review = shlex.split(review)
                 if (review[0] == 'Review'):
-                    lista.append(var[key])
-            for elem in lista:
-                if (elem.place_id == self.id):
-                    result.append(elem)
+                    review_list.append(all_objects[key])
+            for review in review_list:
+                if (review.place_id == self.id):
+                    result.append(review)
             return (result)
 
         @property
         def amenities(self):
-            """ Returns list of amenity ids """
+            """Returns the list of amenity ids"""
             return self.amenity_ids
 
         @amenities.setter
         def amenities(self, obj=None):
-            """ Appends amenity ids to the attribute """
+            """Appends amenity ids to the attribute"""
             if type(obj) is Amenity and obj.id not in self.amenity_ids:
                 self.amenity_ids.append(obj.id)
