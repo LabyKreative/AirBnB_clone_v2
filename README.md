@@ -151,5 +151,5 @@ $
 
 ### Authors
 
-- **Credoecspa** [GitHub](https://github.com/Credoecspa) ~ [Email](ezejioforchiemerie708@gmail.com)
+- **Ojobumiche** [GitHub](https://github.com/Ojobumiche) ~ [Email](bumiche@gmail.com)
 - **LabyKreative** [GitHub](https://github.com/LabyKreative) ~ [Email](labykreative@yahoo.com)
