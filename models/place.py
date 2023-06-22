@@ -69,7 +69,7 @@ class Place(BaseModel, Base):
             for review in review_list:
                 if (review.place_id == self.id):
                     result.append(review)
-            return result
+            return (result)
 
         @property
         def amenities(self):
