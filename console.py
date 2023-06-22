@@ -13,8 +13,11 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
-    """ Contains the functionality for the HBNB console"""
-
+     """Command interpreter for HBnB.
+    Attributes:
+        prompt (str): The command prompt.
+        __classes (set): The set of available class names.
+    """
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
@@ -22,13 +25,13 @@ class HBNBCommand(cmd.Cmd):
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
-              }
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
-            }
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -93,24 +96,24 @@ class HBNBCommand(cmd.Cmd):
         return stop
 
     def do_quit(self, command):
-        """ Method to exit the HBNB console"""
+        """Method to exit the HBNB console"""
         exit()
 
     def help_quit(self):
-        """ Prints the help documentation for quit  """
+        """Prints the help documentation for quit  """
         print("Exits the program with formatting\n")
 
     def do_EOF(self, arg):
-        """ Handles EOF to exit program """
+        """Handles EOF to exit program """
         print()
         exit()
 
     def help_EOF(self):
-        """ Prints the help documentation for EOF """
+        """Prints the help documentation for EOF """
         print("Exits the program without formatting\n")
 
     def emptyline(self):
-        """ Overrides the emptyline method of CMD """
+        """Overrides the emptyline method of CMD """
         pass
 
     def do_create(self, args):
@@ -201,7 +204,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def help_destroy(self):
-        """ Help information for the destroy command """
+        """Help information for the destroy command"""
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
@@ -222,7 +225,7 @@ class HBNBCommand(cmd.Cmd):
         print(print_list)
 
     def help_all(self):
-        """ Help information for the all command """
+        """Help information for the all command"""
         print("Shows all objects, or all of a class")
         print("[Usage]: all <className>\n")
 
@@ -235,11 +238,11 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def help_count(self):
-        """ """
+        """Counts class name """
         print("Usage: count <class_name>")
 
     def do_update(self, args):
-        """ Updates a certain object with new info """
+        """Updates a certain object with new info """
         c_name = c_id = att_name = att_val = kwargs = ''
 
         # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
@@ -302,10 +305,10 @@ class HBNBCommand(cmd.Cmd):
         new_dict = storage.all()[key]
 
         # iterate through attr names and values
-        for i, att_name in enumerate(args):
+        for x, att_name in enumerate(args):
             # block only runs on even iterations
-            if (i % 2 == 0):
-                att_val = args[i + 1]  # following item is value
+            if (x % 2 == 0):
+                att_val = args[x + 1]  # following item is value
                 if not att_name:  # check for att_name
                     print("** attribute name missing **")
                     return
@@ -325,6 +328,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
