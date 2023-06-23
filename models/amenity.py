@@ -7,7 +7,7 @@ from models.place import place_amenity
 
 
 class Amenity(BaseModel, Base):
-    """This is the class for Amenity
+    """Defines the class for Amenity
     Attributes:
         name: input name
     """
