@@ -9,7 +9,8 @@ from fabric.api import local
 def do_pack():
     """Create an archive file of the directory web_static directory"""
     dt = datetime.utcnow()
-    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
+    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(
+        dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
     if local("mkdir -p versions").failed:
         return None
 
