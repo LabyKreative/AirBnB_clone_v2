@@ -15,12 +15,16 @@ def do_pack():
                                                          dt.hour,
                                                          dt.minute,
                                                          dt.second)
-    if not os.path.isdir("versions"):
-        os.makedirs("versions")
-
-    result = local(f"tar -cvzf {file} web_static", capture=True)
-
-    if result.fail:
+    if local("mkdir -p versions").failed:
         return None
+
+    result = local("tar -cvzf {} web_static".format(file))
+    if result.failed:
+        return None
+
+    size_result = local("wc -c {}".format(file), capture=True)
+    size = size_result.stdout.split()[0]
+
+    print("web_static packed: {} -> {} Bytes".format(file, size))
 
     return file
