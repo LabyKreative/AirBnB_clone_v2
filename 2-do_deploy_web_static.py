@@ -10,20 +10,13 @@ env.hosts = ["100.26.154.241", "35.153.194.206"]
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to a web server.
-
-    Args:
-        archive_path (str): The path of the archive to distribute.
-    Returns:
-        If the file doesn't exist at archive_path or an error occurs - False.
-        Otherwise - True.
-    """
+    """Sends an archive to a web server."""
     if os.path.isfile(archive_path) is False:
         return False
-    tar_file = archive_path.split("/")[-1]
-    name = tar_file.split(".")[0]
+    file = archive_path.split("/")[-1]
+    name = file.split(".")[0]
 
-    if put(archive_path, "/tmp/{}".format(tar_file)).failed is True:
+    if put(archive_path, "/tmp/{}".format(file)).failed is True:
         return False
     if run("rm -rf /data/web_static/releases/{}/".
            format(name)).failed is True:
@@ -32,9 +25,9 @@ def do_deploy(archive_path):
            format(name)).failed is True:
         return False
     if run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".
-           format(tar_file, name)).failed is True:
+           format(file, name)).failed is True:
         return False
-    if run("rm /tmp/{}".format(tar_file)).failed is True:
+    if run("rm /tmp/{}".format(file)).failed is True:
         return False
     if run("mv /data/web_static/releases/{}/web_static/* "
            "/data/web_static/releases/{}/".format(name, name)).failed is True:
