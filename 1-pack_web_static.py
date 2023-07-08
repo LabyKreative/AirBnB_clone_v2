@@ -11,9 +11,16 @@ def do_pack():
     dt = datetime.utcnow()
     file = "versions/web_static_{}{}{}{}{}{}.tgz".format(
         dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
-    if os.path.isdir("versions") is false:
-        if local("mkdir -p versions").failed is True:
-            return None
-    if local("tar -cvzf {} web_static".format(file)).failed is True:
+    if local("mkdir -p versions").failed:
         return None
+
+    result = local("tar -cvzf {} web_static".format(file))
+    if result.failed:
+        return None
+
+    size_result = local("wc -c {}".format(file), capture=True)
+    size = size_result.stdout.split()[0]
+
+    print("web_static packed: {} -> {} Bytes".format(file, size))
+
     return file
