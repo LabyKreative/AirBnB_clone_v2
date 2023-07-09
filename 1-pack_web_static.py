@@ -8,19 +8,18 @@ from fabric.api import local
 
 def do_pack():
     """Create an archive file of the directory web_static directory"""
-    dt = datetime.now()
-    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(
-        dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
-    if local("mkdir -p versions").failed:
+    dt = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+
+    arc_file = "versions/web_static_{}.tgz".format(dt)
+    print("Packing web_static to {}".format(arc_file))
+    if not os.path.exists("versions"):
+        local("mkdir -p versions")
+
+    fab_file = local("tar -cvzf {} web_static".format(arc_file))
+    if fab_file.succeeded:
+        size = os.path.getsize(arc_file)
+        print("web_static packed: {} -> {} Bytes".format(arc_file, size))
+        return arc_file
+    else:
         return None
 
-    result = local("tar -cvzf {} web_static".format(file))
-    if result.failed:
-        return None
-
-    size_result = local("wc -c {}".format(file), capture=True)
-    size = size_result.stdout.split()[0]
-
-    print("web_static packed: {} -> {} Bytes".format(file, size))
-
-    return file
