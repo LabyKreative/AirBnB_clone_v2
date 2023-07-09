@@ -13,7 +13,7 @@ def do_pack():
     arc_file = "versions/web_static_{}.tgz".format(dt)
     print("Packing web_static to {}".format(arc_file))
     if not os.path.exists("versions"):
-        local("mkdir -p versions")
+        local("mkdir versions")
 
     fab_file = local("tar -cvzf {} web_static".format(arc_file))
     if fab_file.succeeded:
