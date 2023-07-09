@@ -22,4 +22,3 @@ def do_pack():
         return arc_file
     else:
         return None
-
