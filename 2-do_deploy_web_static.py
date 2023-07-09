@@ -11,26 +11,38 @@ env.private_key = "~/.ssh/school"
 
 
 def do_deploy(archive_path):
-    """Sends an archive to the wae server """
-    if not os.path.exists(archive_path):
-        return False
+        """Sends an archive to the wae server"""
+        try:
+                if not (path.exists(archive_path)):
+                        return False
 
-    filename = archive_path.split("/")
-    filename = filename[1]
-    fname = filename.split('.')
-    fname = fname[0]
+                # Uploads the archive
+                put(archive_path, '/tmp/')
 
-    newpath = '/data/web_static/releases/{}/'.format(fname)
+                # Creates the target directory
+                timestamp = archive_path[-18:-4]
+                run('sudo mkdir -p /data/web_static/releases/web_static_{}/'.format(timestamp))
 
-    try:
-        put(archive_path, "/tmp/")
-        run("mkdir -p {}".format(newpath))
-        run("tar -xzf /tmp/{} -C {}".format(filename, newpath))
-        run("rm /tmp/{}".format(filename))
-        run("mv {}web_static/* {}".format(newpath, newpath))
-        run("rm -rf {}web_static".format(newpath))
-        run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(newpath))
+                # Unzips the archive and remove .tgz
+                run('sudo tar -xzf /tmp/web_static_{}.tgz -C /data/web_static/releases/web_static_{}/'
+                    .format(timestamp, timestamp))
+
+                # Removes the archive
+                run('sudo rm /tmp/web_static_{}.tgz'.format(timestamp))
+
+                # Moves the archive contents to host web_static director
+                run('sudo mv /data/web_static/releases/web_static_{}/web_static/* /data/web_static/releases/web_static_{}/'.format(timestamp, timestamp))
+
+                # Removes extraneous web_static directory
+                run('sudo rm -rf /data/web_static/releases/web_static_{}/web_static'.format(timestamp))
+
+                # Deletes the pre-existing symbolic link
+                run('sudo rm -rf /data/web_static/current')
+
+                # Re-establishes symbolic link
+                run('sudo ln -s /data/web_static/releases/web_static_{}/ /data/web_static/current'.format(timestamp))
+        except:
+                return False
+
+        # Returns true on success
         return True
-    except:
-        return False
