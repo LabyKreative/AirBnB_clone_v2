@@ -25,7 +25,7 @@ def do_pack():
         local("tar -cvzf {} web_static".format(arc_file))
         file_size = os.stat(arc_file).st_size
         print("web_static packed: {} -> {} Bytes".format(arc_file, file_size))
-    except Exception:
+    except Exception as e:
         arc_file = None
-        print("Packing Failed")
+        print("Packing Failed: {}".format(e))
     return arc_file
