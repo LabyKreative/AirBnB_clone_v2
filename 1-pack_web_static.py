@@ -18,16 +18,6 @@ def do_pack():
         dt.day,
         dt.hour,
         dt.minute,
-
-    if not os.path.isdir("versions"):
-        os.mkdir("versions")
-    dt = datetime.now()
-    arc_file = "versions/web_static_{}{}{}{}{}{}.tgz".format(
-        dt.year,
-        dt.month,
-        dt.day,
-        dt.hour,
-        dt.minute,
         dt.second
     )
     try:
