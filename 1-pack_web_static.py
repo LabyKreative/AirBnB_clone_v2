@@ -27,4 +27,5 @@ def do_pack():
         print("web_static packed: {} -> {} Bytes".format(arc_file, file_size))
     except Exception:
         arc_file = None
+        print("Packing Failed")
     return arc_file
