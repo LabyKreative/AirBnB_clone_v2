@@ -18,19 +18,19 @@ def do_pack():
 
     # Use the current date and time to name the archive file.
     date = datetime.now().strftime("%Y%m%d%H%M%S")
-    archive_file_path = "versions/web_static_{}.tgz".format(date)
+    arc_file_path = "versions/web_static_{}.tgz".format(date)
 
     # Create the archive file.
-    archive_file_created = local("tar -cvzf {} web_static".format(archive_file_path))
-    logging.info("Archive file {} created".format(archive_file_path))
+    arc_file_created = local("tar -cvzf {} web_static".format(arc_file_path))
+    logging.info("Archive file {} created".format(arc_file_path))
 
-    if archive_file_created.succeeded:
-        return archive_file_path
+    if arc_file_created.succeeded:
+        return arc_file_path
     else:
         return None
 
     # Return the path to the archive file.
-    return archive_file_path
+    return arc_file_path
 
 
 # Deploy archive
