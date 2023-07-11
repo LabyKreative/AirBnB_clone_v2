@@ -8,6 +8,8 @@ from fabric.api import local
 from fabric.api import put
 from fabric.api import run
 
+env.user = "ubuntu"
+env.my_ssh_private_key = "~/.ssh/id_rsa"
 env.hosts = ["100.26.154.241", "35.153.194.206"]
 
 
