@@ -51,7 +51,7 @@ def do_deploy(archive_path):
         run("sudo rm -rf /data/web_static/current")
         print("Deleted /data/web_static/current")
         run("sudo ln -s {} /data/web_static/current".format(new_ver))
-        print("Created symlink {} -> {}".format(new_ver, current))
+        print("Created symlink {} -> {}".format(new_ver))
 
         return True
 
