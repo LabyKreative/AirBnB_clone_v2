@@ -34,6 +34,7 @@ from flask import Flask
 from flask import render_template
 
 app = Flask(__name__)
+app.debug = False
 
 
 @app.route("/hbnb", strict_slashes=False)
@@ -53,4 +54,4 @@ def teardown(exc):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", port=5000)
