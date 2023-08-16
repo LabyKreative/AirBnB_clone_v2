@@ -10,9 +10,15 @@ app = Flask(__name__)
 app.debug = False
 
 
-@app.route("/web_flask", strict_slashes=False)
+@app.route("/", strict_slashes=False)
 def hello():
-    """Displays the html content'"""
+    """Displays 'Hello HBNB!'"""
+    return ("Hello HBNB!")
+
+
+@app.route("/web_flask", strict_slashes=False)
+def html_page():
+    """Displays the content of the specified html page"""
     return render_template("5-number.html")
 
 
