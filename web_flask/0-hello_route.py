@@ -6,6 +6,7 @@ You must use the option strict_slashes=False in your route definition
 """
 from flask import Flask
 
+
 app = Flask(__name__)
 app.debug = False
 
