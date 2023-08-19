@@ -4,7 +4,7 @@
 
 ## Project description
 
-- AirBnB clone - The console project represents a simple version of AirBnB web app.
+- AirBnB clone - The console project represents a simple classic version of AirBnB web app.
   It performs mini features of AirBnB app as interpreted in the command line. The basic idea of the project is to learn the fundamental concepts
   of HLP(Higher Level Programming) using python then later introduce Flask: ![alt text](https://i.morioh.com/200817/4e495d78.webp)
   <https://flask.palletsprojects.com/en/2.3.x>
